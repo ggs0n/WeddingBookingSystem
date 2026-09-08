@@ -11,7 +11,8 @@ export type Booking = {
     customerEmail : string;
     customerPhone : string;
     typeOfEvent : string;
-    IdentificationNumber : string;
+    brideName : string;
+    groomName : string
 };
 
 
@@ -22,15 +23,16 @@ type BookingStore = {
 }
 
 const emptyBooking : Booking = {
-    venue: "",
-    date: "",
-    session: "",
-    guestCount: 0,
-    customerName: "",
-    customerEmail: "",
-    customerPhone: "",
+    venue : "",
+    date : "",
+    session : "",
+    guestCount :0,
+    customerName : "",
+    customerEmail : "",
+    customerPhone : "",
     typeOfEvent : "",
-    IdentificationNumber: "",
+    brideName : "",
+    groomName : ""
 }
 
 
@@ -49,7 +51,7 @@ export const useBookingStore = create<BookingStore>()(
 
       resetBooking: () => set({ booking: { ...emptyBooking } }),
     }),
-    
+
     {
       name: "booking-draft",
       storage: createJSONStorage(() => sessionStorage),
