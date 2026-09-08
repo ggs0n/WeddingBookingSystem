@@ -34,9 +34,9 @@ export default function CustomerDetail ()
     }
 
     return (
-        <div className="bg-yellow-100">
-            <div className="py-4 px-5 mt-5 p-4 mx-auto max-w-300 border border-2 rounded-md border-gray-200 bg-white">
-                <div>
+        <div className="bg-yellow-100 min-h-500">
+            <div className="py-4 px-5 mt-5 mx-auto max-w-300 border border-2 rounded-md border-gray-200 bg-white">
+                <div className="p-6">
                     <h1 className="text-2xl">Your Details</h1>
                     <p>Please provide your information to continue</p>
 
