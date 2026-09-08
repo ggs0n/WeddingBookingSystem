@@ -1,15 +1,15 @@
-import Image from "next/image";
-import Navbar from "@/components/navbar";
 import HeroHeader from "@/components/heroheader";
 import HeroDesc from "@/components/herodescription";
 import Venus from "@/components/venus";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
-    <div>
-          <HeroHeader></HeroHeader>
-          <HeroDesc></HeroDesc>
-          <Venus></Venus>
-    </div>
+    <main>
+      <HeroHeader />
+      <HeroDesc />
+      <Venus />
+      <Footer />
+    </main>
   );
 }

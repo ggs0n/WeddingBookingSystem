@@ -2,17 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useBookingStore } from "@/store/bookingStore";
 
 export default function BookVenue()
 
 {
     const [selected, setSelected] = useState("");
     const router = useRouter()
+    const updateBooking = useBookingStore((state) => state.updateBooking);
 
     function next() {
-        if (selected) {
-    router.push(`/datevenue?venue=${selected}`);
-  }
+    if (selected) {
+        
+        updateBooking({
+        venue: selected,
+        });
+        router.push(`/datevenue?venue=${selected}`);
+        }
     }
 
     return (
