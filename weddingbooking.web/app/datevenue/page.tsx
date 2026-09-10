@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DayPicker } from "@daypicker/react";
 import { useBookingStore } from "@/store/bookingStore";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ type BookedSlot = {
 
 export default function DateVenue() {
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([])
   const [BookingData, setBookingData] = useState([]);
   const [morningBooked, setmorningBooked] = useState(false)
   const [eveningBooked, seteveningBooked] = useState(false)
@@ -29,6 +30,34 @@ function sessionSelection(session: string) {
     currentSession === session ? "" : session
   );
 }
+
+useEffect(() => {
+    async function loadAvailability() {
+        const response = await fetch("/api/booking/checkavailable", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                venue: booking.venue,
+            }),
+        })
+
+        const data = await response.json()
+
+        setFullyBookedDates(
+            data.fullyBookedDates.map(
+                (date: string) => new Date(`${date}T00:00:00`)
+            )
+        )
+    }
+
+    if (booking.venue) {
+        loadAvailability()
+    }
+}, [booking.venue])
+
+
 
 async function getavailability (date: Date | undefined)
 {
@@ -79,7 +108,14 @@ async function getavailability (date: Date | undefined)
 
         
         if(morningBooked && eveningBooked)
-          alert("Date not available")
+        {
+          setFullyBookedDates((currentDates) => [
+        ...currentDates,
+            date,
+        ])
+
+        setSelectedDate(undefined)
+        }
 
         setmorningBooked(morningBooked)
         seteveningBooked(eveningBooked)
@@ -126,6 +162,7 @@ function Next ()
                 mode="single"
                 selected={selectedDate}
                 onSelect={getavailability}
+                disabled={fullyBookedDates}
                 />
             </div>
         </div>
