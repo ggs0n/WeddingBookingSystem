@@ -6,6 +6,24 @@ export default function Summary ()
 {
     const bookingstore = useBookingStore((state)=> state.booking);
 
+    async function addBooking() {
+        const response = await fetch("/api/booking/createbooking", {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(bookingstore),
+        })
+
+        if(response.ok)
+        {
+            alert("Booking created")
+        }
+        else alert("Booking failed")
+    }
+
+
+
     return (
             <div className="bg-yellow-50 min-h-500">
                 <div className="py-4 px-5 mt-5 mx-auto max-w-300 border border-2 rounded-md border-gray-200 bg-white">
@@ -51,7 +69,7 @@ export default function Summary ()
 
                     <div className="flex justify-between">
                         <button className="bg-orange-400 text-white p-4">Back</button>
-                        <button className="bg-orange-400 text-white p-4">Submit Booking</button>
+                        <button className="bg-orange-400 text-white p-4" onClick={addBooking}>Submit Booking</button>
                     </div>
                 </div>
             </div>

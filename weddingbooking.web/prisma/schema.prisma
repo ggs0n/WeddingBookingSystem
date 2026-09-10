@@ -19,57 +19,19 @@ enum BookingStatus {
   CANCELLED
 }
 
-model Customer {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String    @unique
-  phone     String?
-  bookings  Booking[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  type      String
-}
-
-model Venue {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique
-  address     String
-  capacity    Int
-  price       Decimal   @db.Decimal(10, 2)
-  description String?
-  bookings    Booking[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
 model Booking {
-  id          Int           @id @default(autoincrement())
-  weddingDate DateTime
-  guestCount  Int
-  totalAmount Decimal       @db.Decimal(10, 2)
-  status      BookingStatus @default(PENDING)
-  notes       String?
-  customerId  Int
-  customer    Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  venueId     Int
-  venue       Venue         @relation(fields: [venueId], references: [id], onDelete: Restrict)
-  payments    Payment[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  // Prevents the same venue from being booked twice at the same time.
-  @@unique([venueId, weddingDate])
-  @@index([customerId])
-  @@index([weddingDate, status])
+  id               Int    @id @default(autoincrement())
+  bookingReference String @unique @default(uuid())
+  venue             String
+  date              String
+  session           String
+  guestCount        Int
+  customerName      String
+  customerEmail     String
+  customerPhone     String
+  typeOfEvent       String
+  brideName         String
+  groomName         String
 }
 
-model Payment {
-  id          Int      @id @default(autoincrement())
-  totalAmount Decimal  @db.Decimal(10, 2)
-  bookingId   Int
-  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 
-  @@index([bookingId])
-}
