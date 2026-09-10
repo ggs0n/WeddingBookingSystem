@@ -8,10 +8,10 @@ import { z } from "zod"
 const customerSchema = z.object({
     fullName: z.string().trim().min(1, "Full name is required"),
     phoneNo: z.string().trim().min(9, "Invalid phone number"),
-    emailAddress: z.string().trim().email("Invalid email address"),
+    emailAddress: z.string().trim().max(50).email("Invalid email address"),
     typeOfEvent: z.enum(["Wedding", "Aqiqah", "Nikah"]),
-    brideName: z.string(),
-    groomName: z.string(),
+    brideName: z.string().max(50),
+    groomName: z.string().max(50),
     guestCount: z.coerce.number().int().positive(
         "Guest count must be more than 0"
     ),
@@ -22,8 +22,6 @@ export default function CustomerDetail ()
     const booking = useBookingStore((state) => state.booking);
     const updateBooking = useBookingStore((state) => state.updateBooking);
     const router = useRouter()
-
-    
 
     function Next (event : SubmitEvent<HTMLFormElement>)
     {   
@@ -84,7 +82,7 @@ export default function CustomerDetail ()
 
                             <div className="mb-3">
                                 <h1 className="font-bold">Phone Number *</h1>
-                                <input type="text" name="phoneNo" className="w-full border-1 rounded border-gray-300"></input>
+                                <input type="number" inputMode="numeric" name="phoneNo" className="w-full border-1 rounded border-gray-300"></input>
                             </div>
 
                             <div className="mb-3">
@@ -115,7 +113,7 @@ export default function CustomerDetail ()
 
                             <div className="mb-3">
                                 <h1 className="font-bold">Guest Count Pax</h1>
-                                <input type="text" name="guestCount" className="w-full border-1 rounded border-gray-300"></input>
+                                <input type="number" name="guestCount" inputMode="numeric" className="w-full border-1 rounded border-gray-300"></input>
                             </div>
 
                             <div className="flex justify-between">
