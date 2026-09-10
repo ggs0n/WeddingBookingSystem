@@ -1,0 +1,45 @@
+.calendar :global(.rdp-root) {
+    --rdp-accent-color: #064e3b;
+    --rdp-accent-background-color: #ecfdf5;
+    --rdp-selected-border: 2px solid #064e3b;
+    --rdp-today-color: #b45309;
+    --rdp-disabled-opacity: 1;
+    margin: 0;
+}
+
+.calendar :global(.rdp-selected .rdp-day_button) {
+    border-color: #064e3b;
+    background: #064e3b;
+    color: white;
+}
+
+.calendar :global(.rdp-day_button:hover:not(:disabled)) {
+    background: #ecfdf5;
+}
+
+.calendar :global(.rdp-disabled:not(.rdp-selected) .rdp-day_button) {
+    background: #f1f0ed;
+    color: #a8a29e;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.calendar :global(.rdp-caption_label) {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #0f172a;
+}
+
+.calendar :global(.rdp-weekday) {
+    color: #78716c;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+@media (max-width: 420px) {
+    .calendar :global(.rdp-root) {
+        --rdp-day-height: 38px;
+        --rdp-day-width: 38px;
+        --rdp-day_button-height: 36px;
+        --rdp-day_button-width: 36px;
+    }
+}

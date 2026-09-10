@@ -12,7 +12,8 @@ export type Booking = {
     customerPhone : string;
     typeOfEvent : string;
     brideName : string;
-    groomName : string
+    groomName : string;
+    typeofpackage : string
 };
 
 
@@ -32,7 +33,8 @@ const emptyBooking : Booking = {
     customerPhone : "",
     typeOfEvent : "",
     brideName : "",
-    groomName : ""
+    groomName : "",
+    typeofpackage : ""
 }
 
 

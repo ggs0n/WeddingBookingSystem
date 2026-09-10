@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma"
 
 export async function POST(request: Request) {
+    if(!request)
+    return
+
     const body = await request.json()
 
     const bookings = await prisma.booking.findMany({

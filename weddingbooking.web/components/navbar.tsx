@@ -48,6 +48,13 @@ export default function Navbar() {
         >
           Check Availability
         </Link>
+
+          <Link
+          href="/login"
+          className="rounded-md bg-amber-600 px-4 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-amber-700 sm:px-5"
+        >
+          Login
+        </Link>
       </nav>
     </header>
   );

@@ -1,38 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  COMPLETED
-  CANCELLED
-}
-
-model Booking {
-  id               Int    @id @default(autoincrement())
-  bookingReference String @unique @default(uuid())
-  venue             String
-  date              String
-  session           String
-  guestCount        Int
-  customerName      String
-  customerEmail     String
-  customerPhone     String
-  typeOfEvent       String
-  brideName         String
-  groomName         String
-  typeofpackage     String?
 }
 
 model User {
@@ -97,5 +69,3 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
-
-

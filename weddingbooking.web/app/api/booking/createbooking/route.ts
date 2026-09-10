@@ -17,6 +17,7 @@ export async function POST(request : Request) {
                 customerName : body.customerName,
                 customerEmail : body.customerEmail,
                 customerPhone : body.customerPhone,
+                typeofpackage: body.typeofpackage
             },
         })
 
