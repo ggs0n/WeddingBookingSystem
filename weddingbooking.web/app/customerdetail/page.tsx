@@ -3,6 +3,19 @@
 import { useBookingStore } from "@/store/bookingStore"
 import { SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
+import { z } from "zod"
+
+const customerSchema = z.object({
+    fullName: z.string().trim().min(1, "Full name is required"),
+    phoneNo: z.string().trim().min(9, "Invalid phone number"),
+    emailAddress: z.string().trim().email("Invalid email address"),
+    typeOfEvent: z.enum(["Wedding", "Aqiqah", "Nikah"]),
+    brideName: z.string(),
+    groomName: z.string(),
+    guestCount: z.coerce.number().int().positive(
+        "Guest count must be more than 0"
+    ),
+})
 
 export default function CustomerDetail ()
 {
@@ -17,20 +30,24 @@ export default function CustomerDetail ()
         event.preventDefault();
         const formData = new FormData(event?.currentTarget);
 
+        const result = customerSchema.safeParse(Object.fromEntries(formData))
+
+        if (!result.success) {
+        alert(result.error.issues[0].message)
+        return
+    }
+
         updateBooking({
-            customerName : String(formData.get("fullName")),
-            customerPhone : String(formData.get("phoneNo")),
-            customerEmail : String(formData.get("emailAddress")),
-            typeOfEvent : String(formData.get("typeOfEvent")),
-            brideName : String(formData.get("brideName")),
-            groomName : String(formData.get("groomName")),
-            guestCount : Number(formData.get("guestCount"))
-        }
-        );
+        customerName: result.data.fullName,
+        customerPhone: result.data.phoneNo,
+        customerEmail: result.data.emailAddress,
+        typeOfEvent: result.data.typeOfEvent,
+        brideName: result.data.brideName,
+        groomName: result.data.groomName,
+        guestCount: result.data.guestCount,
+        })
 
-        router.push("/summary")
-
-        
+        router.push("/summary")       
     }
 
     return (
