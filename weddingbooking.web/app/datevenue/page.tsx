@@ -6,18 +6,84 @@ import { useBookingStore } from "@/store/bookingStore";
 import { useRouter } from "next/navigation";
 import "@daypicker/react/style.css";
 
+type BookedSlot = {
+    venue: string
+    date: string
+    session: string
+}
+
+
 export default function DateVenue() {
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [BookingData, setBookingData] = useState([]);
+  const [morningBooked, setmorningBooked] = useState(false)
+  const [eveningBooked, seteveningBooked] = useState(false)
   const router = useRouter();
   const [selectedSession, setSelectedSession] = useState("");
-  const updateBooking = useBookingStore(
-    (state) => state.updateBooking
+  const booking = useBookingStore((state)=> state.booking);
+  const updateBooking = useBookingStore((state) => state.updateBooking
   )
 
 function sessionSelection(session: string) {
   setSelectedSession((currentSession) =>
     currentSession === session ? "" : session
   );
+}
+
+async function getavailability (date: Date | undefined)
+{
+    if(!date)
+    return
+
+    setSelectedDate(date)
+
+    const formattedDate = [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, "0"),
+        String(date.getDate()).padStart(2, "0"),
+    ].join("-")
+
+    const response = await fetch("/api/booking/checkavailable", 
+        {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify (
+                {
+                    venue : booking.venue,
+                    date : formattedDate,
+                }
+            )
+        }
+    )
+
+    if (response.ok)
+    {
+        var data = await response.json()
+        setBookingData(data.bookedSlots)
+
+        const morningBooked = data.bookedSlots.some(
+        (slot: BookedSlot) =>
+            slot.venue === booking.venue &&
+            slot.date === formattedDate &&
+            slot.session === "Morning",
+        )
+
+        const eveningBooked = data.bookedSlots.some(
+        (slot: BookedSlot) =>
+            slot.venue === booking.venue &&
+            slot.date === formattedDate &&
+            slot.session === "Evening",
+        )
+
+        
+        if(morningBooked && eveningBooked)
+          alert("Date not available")
+
+        setmorningBooked(morningBooked)
+        seteveningBooked(eveningBooked)
+    }
 }
 
 function Next ()
@@ -59,7 +125,7 @@ function Next ()
                 <DayPicker className=""
                 mode="single"
                 selected={selectedDate}
-                onSelect={setSelectedDate}
+                onSelect={getavailability}
                 />
             </div>
         </div>
@@ -67,6 +133,7 @@ function Next ()
         <div>
             <h1 className="mb-6">2. Select session</h1>
             <div className="">
+                    { !morningBooked && (
                     <button
                     type="button"
                     onClick={() => sessionSelection("Morning")}
@@ -78,6 +145,9 @@ function Next ()
                     >
                     Morning Session
                     </button>
+                    )}
+
+                    { !eveningBooked && (
                     <button
                     type="button"
                     onClick={() => sessionSelection("Evening")}
@@ -89,6 +159,7 @@ function Next ()
                     >
                     Evening Session
                     </button>
+                    )}
             </div>
         </div>
         </div>

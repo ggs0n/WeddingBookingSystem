@@ -22,8 +22,6 @@ export default function Summary ()
         else alert("Booking failed")
     }
 
-
-
     return (
             <div className="bg-yellow-50 min-h-500">
                 <div className="py-4 px-5 mt-5 mx-auto max-w-300 border border-2 rounded-md border-gray-200 bg-white">
